@@ -13,42 +13,44 @@ nappula.addEventListener('click', function (evt) {
   const weight = Number(document.getElementById('weight').value);
   const height = Number(document.getElementById('height').value);
 
-  console.log(typeof weight);
-  let yht = weight + height;
-  console.log(yht);
-
   if (!weight || !height) {
   } else {
-    resettiFunktio();
-    bmiLaskuri(weight, height);
+    const result = bmiLaskuri(weight, height);
+    resettiFunktio(result);
   }
 });
 
 function bmiLaskuri(weight, height) {
-  console.log('Lasketaan BMI');
   let bmi = (weight / ((height * height) / 10000)).toFixed(1);
-  console.log(bmi);
   document.querySelector('.bmi-score').textContent = bmi;
 
   if (bmi < 19) {
-    console.log('Alipaino');
-
     document.querySelector('.analysis').textContent = lowBmi;
     document.querySelector('.bmi0-19').classList.add('lowBmi');
+    return 'low';
   } else if (bmi > 25) {
-    console.log('Ylipaino');
-
     document.querySelector('.analysis').textContent = highBmi;
     document.querySelector('.bmi25-30').classList.add('highBmi');
+    return 'high';
   } else {
-    console.log('Normaalipaino');
-
     document.querySelector('.analysis').textContent = normalBmi;
-    // document.querySelector('.bmi19-25').style.color = 'orange';
     document.querySelector('.bmi19-25').classList.add('normalBmi');
+    return 'normal';
   }
 }
 
-function resettiFunktio() {
+function resettiFunktio(result) {
   // täällä kannattaa resetoida tyylit
+  if (result == "low") {
+        document.querySelector(".bmi19-25").classList.remove("normalBmi");
+        document.querySelector(".bmi25-30").classList.remove("highBmi");
+    }
+    else if (result == "normal") {
+        document.querySelector(".bmi0-19").classList.remove("lowBmi");
+        document.querySelector(".bmi25-30").classList.remove("highBmi");
+    }
+    else if (result == "high") {
+        document.querySelector(".bmi19-25").classList.remove("normalBmi");
+        document.querySelector(".bmi0-19").classList.remove("lowBmi");
+    }
 }
